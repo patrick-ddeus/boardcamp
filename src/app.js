@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import GamesRouter from "./routes/games.routes.js";
 import CustomersRouter from "./routes/customers.routes.js";
+import RentalsRouter from "./routes/rentals.routes.js";
 
 const app = express();
 const porta = 5000;
@@ -11,6 +12,7 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use('/games', GamesRouter);
 app.use('/customers', CustomersRouter);
+app.use('/rentals', RentalsRouter);
 
 app.listen(porta, () => console.log(`
     Servidor iniciado na porta ${porta}
