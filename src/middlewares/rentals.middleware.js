@@ -45,3 +45,23 @@ export const validRental = async (req, res, next) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+export const validFinishRental = async (req, res, next) => {
+    const { id } = req.params;
+    try {
+        const rentals = await db.query(`SELECT * FROM rentals WHERE id=$1`, [id]);
+
+        if (!rentals.rows.length) {
+            return res.status(404).json({ message: "Aluguel inexistente!" });
+        }
+
+        if (rentals.rows[0].returnDate) {
+            return res.status(400).json({ message: "Aluguel já finalizado!" });
+        }
+
+        req.rental = { rental: rentals.rows[0] };
+        return next();
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};

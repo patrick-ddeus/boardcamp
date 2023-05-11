@@ -55,16 +55,7 @@ const postRental = async (req, res) => {
         await db.query(`INSERT 
         INTO rentals 
         ("customerId", "gameId", "rentDate", "daysRented", "returnDate", "originalPrice", "delayFee")
-        VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-            [
-                rental.customerId,
-                rental.gameId,
-                rental.rentDate,
-                rental.daysRented,
-                rental.returnDate,
-                rental.originalPrice,
-                rental.delayFee
-            ]);
+        VALUES ($1, $2, $3, $4, $5, $6, $7)`, Object.values(rental));
 
         res.status(201).json({ message: "Ok!" });
     } catch (error) {
@@ -73,7 +64,25 @@ const postRental = async (req, res) => {
 };
 
 const finishRental = async (req, res) => {
+    const { id } = req.params;
+    const { rental } = req.rental;
 
+    const currentDate = new Date();
+    const rentDate = new Date(rental.rentDate);
+    const returnDate = dayjs(Date.now()).format('YYYY-MM-DD');
+    let delayFee = 0;
+
+    if (currentDate > rentDate) {
+        const delayDays = Math.floor((currentDate - rentDate) / (1000 * 60 * 60 * 24));
+        delayFee = delayDays * (rental.originalPrice / rental.daysRented);
+    }
+
+    try {
+        await db.query(`UPDATE rentals SET "returnDate"=$1, "delayFee"=$2 WHERE id=$3`, [returnDate, delayFee, id]);
+        res.sendStatus(200);
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
 };
 
 export default {
