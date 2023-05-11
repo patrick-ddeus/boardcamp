@@ -69,15 +69,16 @@ const finishRental = async (req, res) => {
 
     const currentDate = new Date();
     const rentDate = new Date(rental.rentDate);
-    const returnDate = dayjs(Date.now()).format('YYYY-MM-DD');
+    const daysToExpire = rentDate.getTime() + rental.daysRented * (1000 * 60 * 60 * 24);
     let delayFee = 0;
 
-    if (currentDate > rentDate) {
-        const delayDays = Math.floor((currentDate - rentDate) / (1000 * 60 * 60 * 24));
+    if (currentDate > daysToExpire) {
+        const delayDays = Math.floor((currentDate - daysToExpire) / (1000 * 60 * 60 * 24));
         delayFee = delayDays * (rental.originalPrice / rental.daysRented);
     }
 
     try {
+        const returnDate = dayjs(Date.now()).format('YYYY-MM-DD');
         await db.query(`UPDATE rentals SET "returnDate"=$1, "delayFee"=$2 WHERE id=$3`, [returnDate, delayFee, id]);
         res.sendStatus(200);
     } catch (error) {
