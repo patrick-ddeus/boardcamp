@@ -2,12 +2,30 @@ import { db } from "../database/connect.js";
 import dayjs from "dayjs";
 
 const getAllRentals = async (req, res) => {
+    const queryCustomerId = req.query.customerId;
+    const queryGameId = req.query.gameId;
+    const offset = req.query.offset || 0;
+    const limit = req.query.limit || null;
+
+    let whereClause = '';
+    let orderByClause = '';
+
+    if (queryCustomerId) {
+        whereClause = `WHERE rentals."customerId"=${queryCustomerId}`;
+    } else if (queryGameId) {
+        whereClause = `WHERE rentals."gameId"=${queryGameId}`;
+    }
+
     try {
         const rentals = await db.query(`
         SELECT rentals.*, customers.name as customer, games.name as game
         FROM rentals
         JOIN customers ON customers.id=rentals."customerId"
-        JOIN games ON games.id=rentals."gameId"`);
+        JOIN games ON games.id=rentals."gameId"
+        ${whereClause}
+        ${orderByClause}
+        OFFSET ${offset} LIMIT ${limit}
+        `);
 
         const rentalsToSend = rentals.rows.map(rental => {
             return {

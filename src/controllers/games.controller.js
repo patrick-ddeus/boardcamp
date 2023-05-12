@@ -2,16 +2,19 @@ import { db } from "../database/connect.js";
 
 const getAllGames = async (req, res) => {
     const name = req.query.name;
+    const offset = req.query.offset || 0;
+    const limit = req.query.limit || null;
+    
     try {
         let games;
         if (name) {
             games = await db.query(`
             SELECT name, image, "stockTotal", "pricePerDay" 
             FROM games 
-            WHERE name LIKE '${name}%'`);
+            WHERE name LIKE '${name}%' OFFSET ${offset} LIMIT ${limit}`);
 
         } else {
-            games = await db.query(`SELECT name, image, "stockTotal", "pricePerDay" FROM games`);
+            games = await db.query(`SELECT name, image, "stockTotal", "pricePerDay" FROM games OFFSET ${offset} LIMIT ${limit}`);
         }
 
         if (!games.rows.length) {

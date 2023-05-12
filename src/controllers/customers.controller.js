@@ -2,8 +2,24 @@ import { db } from "../database/connect.js";
 
 
 const getAllCustomers = async (req, res) => {
+    const cpf = req.query.cpf;
+    const offset = req.query.offset || 0;
+    const limit = req.query.limit || null;
+
     try {
-        const customers = await db.query(`SELECT id, name, phone, cpf, birthday FROM customers`);
+        let customers;
+        if (cpf) {
+            customers = await db.query(`
+            SELECT id, name, phone, cpf, birthday 
+            FROM customers 
+            WHERE cpf LIKE '${cpf}%'
+            OFFSET ${offset} LIMIT ${limit}`);
+        } else {
+            customers = await db.query(`
+            SELECT id, name, phone, cpf, birthday 
+            FROM customers
+            OFFSET ${offset} LIMIT ${limit}`);
+        }
         res.status(201).json({ message: "Ok!", customers: customers.rows });
     } catch (error) {
         return res.status(500).json({ error: error.message });
