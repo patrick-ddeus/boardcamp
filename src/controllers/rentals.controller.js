@@ -92,7 +92,7 @@ const postRental = async (req, res) => {
         const rental = {
             customerId,
             gameId,
-            rentDate: Date.now(),
+            rentDate: dayjs( Date.now() ).format( 'YYYY-MM-DD' ),
             daysRented,
             returnDate: null,
             originalPrice,
