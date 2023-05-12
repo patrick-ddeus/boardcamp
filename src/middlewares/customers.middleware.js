@@ -46,7 +46,9 @@ export const validUpdateCustomer = async (req, res, next) => {
             return res.status(404).json({ message: "Usuário inexistente!" });
         }
 
-        if (rows[0].cpf !== cpf) {
+        const customerCpf = await db.query(`SELECT cpf FROM customers WHERE cpf=$1`, [cpf]);
+
+        if (customerCpf.rows.length && customerCpf.rows[0].cpf !== rows[0].cpf) {
             return res.status(409).json({ message: "CPF inserido é inválido para esse cliente!" });
         }
 

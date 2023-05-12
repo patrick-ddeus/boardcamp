@@ -42,8 +42,6 @@ const getAllRentals = async (req, res) => {
         }
     }
 
-    console.log(whereClause);
-
     if (order) {
         orderByClause += `ORDER BY "${order}" ${desc ? 'DESC' : ''}`;
     }
@@ -80,7 +78,7 @@ const getAllRentals = async (req, res) => {
             };
         });
 
-        res.status(200).json({ message: "Ok", rentals: rentalsToSend });
+        res.status(200).json(rentalsToSend );
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -94,7 +92,7 @@ const postRental = async (req, res) => {
         const rental = {
             customerId,
             gameId,
-            rentDate: dayjs().format('DD-MM-YYYY'),
+            rentDate: dayjs(Date.now()).format('YYYY-MM-DD'),
             daysRented,
             returnDate: null,
             originalPrice,
