@@ -24,7 +24,7 @@ export const validGame = async (req, res, next) => {
             return res.status(409).json({ message: "Jogo já cadastrado, insira outro nome!" });
         }
 
-        
+        return next()
     } catch (error) {
         res.status(500).json({ error: error });
     }
