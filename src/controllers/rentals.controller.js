@@ -86,8 +86,21 @@ const finishRental = async (req, res) => {
     }
 };
 
+const deleteRental = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        await db.query(`DELETE FROM rentals WHERE id=$1 `, [id]);
+        res.sendStatus(200);
+    } catch (error) {
+        return res.status(500).json({ error: error.message });
+    }
+};
+
+
 export default {
     getAllRentals,
     postRental,
-    finishRental
+    finishRental,
+    deleteRental
 };

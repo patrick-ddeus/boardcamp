@@ -55,9 +55,13 @@ export const validFinishRental = async (req, res, next) => {
             return res.status(404).json({ message: "Aluguel inexistente!" });
         }
 
-        if (rentals.rows[0].returnDate) {
+        if (req.method === "POST" && rentals.rows[0].returnDate) {
             return res.status(400).json({ message: "Aluguel já finalizado!" });
-        }
+          }
+      
+          if (req.method === "DELETE" && !rentals.rows[0].returnDate) {
+            return res.status(400).json({ message: "Aluguel não finalizado" });
+          }
 
         req.rental = { rental: rentals.rows[0] };
         return next();
@@ -65,3 +69,4 @@ export const validFinishRental = async (req, res, next) => {
         res.status(500).json({ error: error.message });
     }
 };
+

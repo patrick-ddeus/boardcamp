@@ -6,6 +6,7 @@ const rentalsRouter = Router();
 
 rentalsRouter.get('/', RentalsController.getAllRentals);
 rentalsRouter.post('/', validRental, RentalsController.postRental);
+rentalsRouter.delete('/:id', validFinishRental, RentalsController.deleteRental);
 rentalsRouter.post('/:id/return', validFinishRental, RentalsController.finishRental);
 
 export default rentalsRouter;
