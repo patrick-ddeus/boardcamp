@@ -16,7 +16,7 @@ const getAllGames = async (req, res) => {
 
     try {
         const games = await db.query(`
-            SELECT name, image, "stockTotal", "pricePerDay" 
+            SELECT id, name, image, "stockTotal", "pricePerDay" 
             FROM games 
             ${whereClause}
             ${orderByClause}

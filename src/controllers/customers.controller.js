@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { db } from "../database/connect.js";
 
 const getAllCustomers = async (req, res) => {
@@ -23,7 +24,8 @@ const getAllCustomers = async (req, res) => {
             OFFSET ${offset} LIMIT ${limit}
         `);
 
-        res.status(201).json(customers.rows);
+        const customerToSend = customers.rows.map(customer => ({ ...customer, birthday: dayjs(customer.birthday).format('YYYY-MM-DD') }));
+        res.status(201).json(customerToSend);
     } catch (error) {
         return res.status(500).json({ error: error.message });
     }
@@ -58,7 +60,7 @@ const getOneCustomer = async (req, res) => {
             return res.status(404).json({ message: "Usuário não encontrado!" });
         }
 
-        res.status(201).json(customers.rows[0]);
+        res.status(201).json({ ...customers.rows[0], birthday: dayjs(customers.birthday).format('YYYY-MM-DD') });
     } catch (error) {
         return res.status(500).json({ error: error.message });
     }
