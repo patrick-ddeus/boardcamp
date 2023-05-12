@@ -1,8 +1,18 @@
 import { db } from "../database/connect.js";
 
 const getAllGames = async (req, res) => {
+    const name = req.query.name;
     try {
-        const games = await db.query(`SELECT name, image, "stockTotal", "pricePerDay" FROM games`);
+        let games;
+        if (name) {
+            games = await db.query(`
+            SELECT name, image, "stockTotal", "pricePerDay" 
+            FROM games 
+            WHERE name LIKE '${name}%'`);
+
+        } else {
+            games = await db.query(`SELECT name, image, "stockTotal", "pricePerDay" FROM games`);
+        }
 
         if (!games.rows.length) {
             return res.status(404).json({ message: "Não existem jogos cadastrados!" });
