@@ -13,7 +13,7 @@ export const validGame = async (req, res, next) => {
         return res.status(400).json({ message: "Campo body inválido!", error: erros });
     }
 
-    if (stockTotal < 0 || pricePerDay < 0) {
+    if (Number(stockTotal) <= 0 || Number(pricePerDay) <= 0) {
         return res.sendStatus(400);
     }
 
@@ -24,7 +24,7 @@ export const validGame = async (req, res, next) => {
             return res.status(409).json({ message: "Jogo já cadastrado, insira outro nome!" });
         }
 
-        return next();
+        
     } catch (error) {
         res.status(500).json({ error: error });
     }

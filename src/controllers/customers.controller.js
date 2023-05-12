@@ -58,7 +58,7 @@ const getOneCustomer = async (req, res) => {
             return res.status(404).json({ message: "Usuário não encontrado!" });
         }
 
-        res.status(201).json({ message: "Ok!", customers: customers.rows[0] });
+        res.status(201).json(customers.rows[0]);
     } catch (error) {
         return res.status(500).json({ error: error.message });
     }
