@@ -3,11 +3,11 @@ import { db } from "../database/connect.js";
 const getAllCustomers = async (req, res) => {
     const { cpf, offset = 0, limit = null, order, desc } = req.query;
 
-    let whereClause = 'WHERE TRUE';
+    let whereClause = 'WHERE TRUE ';
     let orderByClause = '';
 
     if (cpf) {
-        whereClause = `AND cpf LIKE '${cpf}%'`;
+        whereClause += `AND cpf LIKE '${cpf}%'`;
     }
 
     if (order) {

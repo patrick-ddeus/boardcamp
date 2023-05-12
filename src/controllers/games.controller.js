@@ -3,7 +3,7 @@ import { db } from "../database/connect.js";
 const getAllGames = async (req, res) => {
     const { name, offset = 0, limit = null, order, desc } = req.query;
 
-    let whereClause = 'WHERE TRUE';
+    let whereClause = 'WHERE TRUE ';
     let orderByClause = '';
 
     if (name) {

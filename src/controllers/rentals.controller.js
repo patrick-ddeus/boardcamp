@@ -8,19 +8,41 @@ const getAllRentals = async (req, res) => {
         offset = 0,
         limit = null,
         order,
-        desc
+        desc,
+        status,
+        startDate
     } = req.query;
 
     let whereClause = 'WHERE TRUE';
     let orderByClause = '';
 
     if (queryCustomerId) {
-        whereClause += `AND rentals."customerId"=${queryCustomerId}`;
+        whereClause += ` AND rentals."customerId"=${queryCustomerId}`;
     }
 
     if (queryGameId) {
-        whereClause = `AND rentals."gameId"=${queryGameId}`;
+        whereClause += ` AND rentals."gameId"=${queryGameId}`;
     }
+
+    if (startDate) {
+        whereClause += ` AND rentals."rentDate" >= to_date('${startDate}', 'YYYY-MM-DD')`;
+    }
+
+
+    if (status) {
+        switch (status) {
+            case "open":
+                whereClause += ` AND rentals."returnDate" IS NULL`;
+                break;
+            case "closed":
+                whereClause += ` AND rentals."returnDate" IS NOT NULL`;
+                break;
+            default:
+                break;
+        }
+    }
+
+    console.log(whereClause);
 
     if (order) {
         orderByClause += `ORDER BY "${order}" ${desc ? 'DESC' : ''}`;
