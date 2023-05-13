@@ -7,7 +7,7 @@ const getAllGames = async (req, res) => {
     let orderByClause = '';
 
     if (name) {
-        whereClause += `AND name LIKE '${name}%'`;
+        whereClause += `AND name ILIKE '${name}%'`;
     }
 
     if (order) {
