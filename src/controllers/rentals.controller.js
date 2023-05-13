@@ -62,7 +62,7 @@ const getAllRentals = async (req, res) => {
                 id: rental.id,
                 customerId: rental.customerId,
                 gameId: rental.gameId,
-                rentDate: dayjs(rental.rentDate).format('YYYY-MM-DD'),
+                rentDate: rental.rentDate,
                 daysRented: rental.daysRented,
                 returnDate: rental.returnDate,
                 originalPrice: rental.originalPrice,
