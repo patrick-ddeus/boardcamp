@@ -24,7 +24,7 @@ const getAllGames = async (req, res) => {
         `);
 
         if (!games.rows.length) {
-            return res.status(404).json({ message: "Não existem jogos cadastrados!" });
+            return res.status(404).json([]);
         }
 
         res.status(201).json(games.rows);
