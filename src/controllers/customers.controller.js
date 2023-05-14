@@ -24,7 +24,9 @@ const getAllCustomers = async (req, res) => {
             OFFSET ${offset} LIMIT ${limit}
         `);
 
-        const customerToSend = customers.rows.map(customer => ({ ...customer, birthday: dayjs(customer.birthday).format('YYYY-MM-DD') }));
+        const customerToSend = customers.rows.map(customer => (
+            { ...customer, birthday: dayjs(customer.birthday).format('YYYY-MM-DD') }
+        ));
         res.status(201).json(customerToSend);
     } catch (error) {
         return res.status(500).json({ error: error.message });

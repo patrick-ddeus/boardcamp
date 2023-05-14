@@ -66,7 +66,7 @@ const getAllRentals = async (req, res) => {
                 daysRented: rental.daysRented,
                 returnDate: rental.returnDate,
                 originalPrice: rental.originalPrice,
-                delayFee: rental.originalPrice,
+                delayFee: rental.delayFee,
                 customer: {
                     id: rental.customerId,
                     name: rental.customer

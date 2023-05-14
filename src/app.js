@@ -3,9 +3,10 @@ import cors from "cors";
 import GamesRouter from "./routes/games.routes.js";
 import CustomersRouter from "./routes/customers.routes.js";
 import RentalsRouter from "./routes/rentals.routes.js";
+import "dotenv/config";
 
 const app = express();
-const porta = 5000;
+const porta = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(cors());
