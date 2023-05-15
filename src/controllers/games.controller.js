@@ -23,10 +23,6 @@ const getAllGames = async (req, res) => {
             OFFSET ${offset} LIMIT ${limit}
         `);
 
-        if (!games.rows.length) {
-            return res.status(404).json([]);
-        }
-
         res.status(201).json(games.rows);
     } catch (error) {
         res.status(500).json({ error: error.message });
